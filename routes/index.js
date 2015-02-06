@@ -63,7 +63,8 @@ index.postIngredients = function(req, res) {
 			ingredientObj,
 			function(err, numAffected) {
 				if (err) errorHandler(err,req,res);
-				if (numAffected != 1) errorHandler(err,req,res);
+				else if (numAffected != 1) errorHandler(err,req,res);
+				else res.end();
 			}
 		);
 	}
@@ -77,6 +78,7 @@ index.postIngredients = function(req, res) {
 		});
 		ingredient.save(function(err) {
 			if (err) errorHandler(err,req,res);
+			else res.end();
 		});
 	}
 
@@ -86,7 +88,7 @@ index.postIngredients = function(req, res) {
  on your burger.
  */
 index.makeOrder = function(req, res) {
-	Ingredient.find({inStock:true}, function(err, ingredients) {
+	Ingredient.find({}, function(err, ingredients) {
 		if (err) errorHandler(err, req, res);
 		else {
 			res.render('order', {'ingredients':ingredients});
@@ -98,21 +100,64 @@ index.makeOrder = function(req, res) {
 queue (database) of pending orders
  */
 index.submitOrder = function(req, res) {
-	res.render('order');
+
+	ingredients = req.body.ids.split(',');
+
+	console.log(ingredients);
+
+	// ingredients is an array of Strings
+	order = new Order({'ingredients': ingredients});
+	
+	order.save(function(err) {
+		if (err) errorHandler(err,req,res);
+		else res.end();
+	});
+
 };
 
 /** list the pending orders
  */
 index.listOrders = function(req, res) {
-	Orders.find({}, function(err, orders) {
-		res.render('kitchen', {'orders': orders});
-	});
-};
+	Order
+		.find({})
+		.populate('ingredients')
+		.exec(function(err, orders) {
+			if (err) errorHandler(err,req,res);
+			else {
+				res.render('kitchen', {'orders':orders});
+			}
+		});
+}
+// 	// Find All Orders
+// 	Order.find({}, function(err, orders) {
 
+// 		// For Each Order,
+// 		for (var i = 0; i < orders.length; i++) {
+// 		 	order = orders[i];
+
+// 			// find the referenced ingredients
+// 			var ingredients = [];
+// 			for (var j = 0; j < order.ingredients.length; i++) {
+// 				id = order.ingredients[j];
+
+
+// 				Ingredient.find({'_id': id}, function(err, ingredient) {
+// 					if (err) errorHandler(err,req,res);
+// 					else {
+// 						ingredients.push(ingredient);
+// 					}
+// 				});
+// 			}
+
+// 			order.ingredients = ingredients;
+// 			console.log(orders)
+// 			res.render('kitchen', {'orders': orders});
+// 		};
+// }
 /** To complete an order, you remove it from the collection of pending orders
  */
 index.completeOrder = function(req, res) {
-	res.render('order');
+	console.log('WIP')
 };
 
 module.exports = index;

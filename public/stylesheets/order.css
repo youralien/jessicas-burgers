@@ -28,3 +28,12 @@ li span{
    width:100%;
    z-index:-1;
 }
+
+.btn-order {
+   margin: 0 auto;
+   display: block;
+}
+
+.total-cost-row {
+   border-top: thick double #000000;
+}

@@ -19,6 +19,7 @@ function enterEditMode(currentTarget) {
  * @return {None}
  */
 function exitEditMode(currentTarget) {
+
 	// Change the div to exit editing mode
   currentTarget.removeClass('editing');
 
@@ -62,17 +63,34 @@ $('.btn-add').click(function(event) {
 ======== order ========
  */
 
+// Calculate total order
 $('.order-checkbox').change(function() {
 	
 	var total = 0;
 	$('input:checked').each(function() {
+		
+		// navigating up and down the DOM tree because of particular formatting of elements
 		total += Number($(this)
 			.parent()
 			.siblings('.price')
 			.children('.price-input')
 			.val());
+
 	})
 	$('#total-cost').val(total)
 });
 
+$orderForm = $('#order-form');
+$('#btn-order').click(function() {
+	
+	var checked_inputs = $orderForm.find(':checked');
+	var ids = []
+	checked_inputs.parent().parent().each(function(i) {
+		ids.push(String($(this).attr('id')));
+	});
+
+	$.post('/order', {'ids': ids.toString()}, function() {
+		$('#result').html('Order was made');
+	});
+});
 
