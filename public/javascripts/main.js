@@ -1,20 +1,6 @@
-// $.ajax({
-// 	url: '/path/to/file',
-// 	type: 'default GET (Other values: POST)',
-// 	dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-// 	data: {param1: 'value1'},
-// })
-// .done(function() {
-// 	console.log("success");
-// })
-// .fail(function() {
-// 	console.log("error");
-// })
-// .always(function() {
-// 	console.log("complete");
-// });
-
-// MY STUFF BELOW
+/**
+======== ingredients.handlebars ========
+ */
 
 /**
  * @param {$('div.ingredient')} currentTarget
@@ -39,12 +25,9 @@ function exitEditMode(currentTarget) {
   $(currentTarget).removeClass('editing');
 
 	// Hide the Save and Out-of Stock Buttons 
-  $(currentTarget).children('button').prop('hidden', true);
+  $(currentTarget).children('button').attr('hidden', true);
 
-	// $(currentTargetprop('hidden', true);
- //  $(this).siblings('button').prop('hidden', true);
-  
- //  $(this).parent('.ingredient').removeClass('editing');
+  debugger;
 }
 
 // Editing the elements in the Ingredients list
@@ -62,13 +45,11 @@ $('.btn-save').click(function (event) {
 	ingredient.price = $(this).siblings('.price-input').val();
 	ingredient.inStock = $(this).siblings('.inStock-input').prop('checked');
 
-	debugger;
 
-	$.post('/ingredients', ingredient, function(data) {
-		debugger;
+	$.post('/ingredients', ingredient, function(){
+		exitEditMode($(this).parent())
 	});
 	
-	exitEditMode($(this).parent())
 });
 
 $('.btn-add').click(function(event) {
@@ -79,3 +60,7 @@ $('.btn-add').click(function(event) {
 	
 	enterEditMode(new_ingredient);
 });
+
+/**
+======== order.handlebars ========
+ */
