@@ -1,8 +1,17 @@
-<form id='ajax-form' method='POST'>
+<link rel="stylesheet" type="text/css" href="/stylesheets/order.css">
+
+<form id='order-form'>
 {{#each ingredients}}
-	<input type='checkbox' enabled>
-		<span> {{this.name}} </span> 
-		<span> {{this.price}} </span>
-	</input>
+<li id='{{this._id}}'>
+<label><input class='order-checkbox' type='checkbox' enabled></label>
+<div class='dotted-bg'></div>
+<label><input class='name' value='{{this.name}}' readonly></label>
+<span class='price'><input class='price-input' value='{{this.price}}' readonly></input></span>
+</li>
 {{/each}}
+<li>
+<label><input id='checkbox-placeholder' type='checkbox' disabled></label>
+<label><input value='Total Cost' readonly></label>
+<span><input id='total-cost' class='price-input' value=0 readonly> </span>
+</li>
 </form>

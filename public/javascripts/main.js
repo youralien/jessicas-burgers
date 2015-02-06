@@ -1,5 +1,5 @@
 /**
-======== ingredients.handlebars ========
+======== ingredients ========
  */
 
 /**
@@ -19,15 +19,12 @@ function enterEditMode(currentTarget) {
  * @return {None}
  */
 function exitEditMode(currentTarget) {
-	// FIXME: these buttons are not hiding!
-	
 	// Change the div to exit editing mode
-  $(currentTarget).removeClass('editing');
+  currentTarget.removeClass('editing');
 
 	// Hide the Save and Out-of Stock Buttons 
-  $(currentTarget).children('button').attr('hidden', true);
+  currentTarget.children('button').attr('hidden', true);
 
-  debugger;
 }
 
 // Editing the elements in the Ingredients list
@@ -45,10 +42,10 @@ $('.btn-save').click(function (event) {
 	ingredient.price = $(this).siblings('.price-input').val();
 	ingredient.inStock = $(this).siblings('.inStock-input').prop('checked');
 
+	exitEditMode($(this).parent());
 
-	$.post('/ingredients', ingredient, function(){
-		exitEditMode($(this).parent())
-	});
+	$.post('/ingredients', ingredient);
+	
 	
 });
 
@@ -62,5 +59,20 @@ $('.btn-add').click(function(event) {
 });
 
 /**
-======== order.handlebars ========
+======== order ========
  */
+
+$('.order-checkbox').change(function() {
+	
+	var total = 0;
+	$('input:checked').each(function() {
+		total += Number($(this)
+			.parent()
+			.siblings('.price')
+			.children('.price-input')
+			.val());
+	})
+	$('#total-cost').val(total)
+});
+
+

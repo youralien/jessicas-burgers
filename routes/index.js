@@ -86,7 +86,12 @@ index.postIngredients = function(req, res) {
  on your burger.
  */
 index.makeOrder = function(req, res) {
-	res.render('order');
+	Ingredient.find({inStock:true}, function(err, ingredients) {
+		if (err) errorHandler(err, req, res);
+		else {
+			res.render('order', {'ingredients':ingredients});
+		}
+	});
 };
 
 /** To submit an order, you add a newly created order (form) data to the
