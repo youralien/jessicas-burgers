@@ -1,10 +1,22 @@
 <div id="main-content">
-	<h3> Pending Orders </h3>
+	<h3> There's Orders to be Made in the Kitchen! </h3>
 	<div id='orders-list'>
 	{{#each orders}}
-		{{#each this.ingredients}}
-			{{this.name}}
-		{{/each}}
+		<li id='{{this._id}}'>
+			<div class='dotted-bg'></div>
+			<label>
+			{{#each this.ingredients}}
+				{{#unless @last}}
+				{{this.name}},
+				{{else}}
+				and {{this.name}}.
+				{{/unless}}
+			{{/each}}
+			</label>
+			<span>
+				<button class='btn-order-completed'>completed</button>
+			</span>
+		</li>
 	{{/each}}
 	</div>
 </div>

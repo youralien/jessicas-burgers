@@ -11,7 +11,9 @@ function enterEditMode(currentTarget) {
   $(currentTarget).addClass('editing');
 
   // Reveal the Save and Out-of-Stock Buttons
-  $(currentTarget).children('button').prop('hidden', false);
+  // $(currentTarget).children('button').prop('hidden', false);
+  $(currentTarget).children('button').show();
+
 }
 
 /**
@@ -24,7 +26,7 @@ function exitEditMode(currentTarget) {
   currentTarget.removeClass('editing');
 
 	// Hide the Save and Out-of Stock Buttons 
-  currentTarget.children('button').attr('hidden', true);
+  currentTarget.children('button').prop('hidden', true);
 
 }
 
@@ -35,6 +37,8 @@ $('.ingredient').not('.editing').click(function (event) {
 
 $('.btn-save').click(function (event) {
 
+	debugger;
+	console.log(typeof this);
 	var ingredient = {}
 
 	// the ingredient
@@ -44,6 +48,7 @@ $('.btn-save').click(function (event) {
 	ingredient.inStock = $(this).siblings('.inStock-input').prop('checked');
 
 	exitEditMode($(this).parent());
+
 
 	$.post('/ingredients', ingredient);
 	
@@ -94,3 +99,15 @@ $('#btn-order').click(function() {
 	});
 });
 
+/**
+======== kitchen ========
+ */
+
+$('.btn-order-completed').click(function(){
+	
+	order_item = $(this).parent().parent()
+	var idToComplete = order_item.attr('id');
+	$('#'+idToComplete).remove();
+	$.post('/kitchen', {'idToComplete': idToComplete});
+
+});

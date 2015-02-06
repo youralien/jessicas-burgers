@@ -103,8 +103,6 @@ index.submitOrder = function(req, res) {
 
 	ingredients = req.body.ids.split(',');
 
-	console.log(ingredients);
-
 	// ingredients is an array of Strings
 	order = new Order({'ingredients': ingredients});
 	
@@ -128,36 +126,17 @@ index.listOrders = function(req, res) {
 			}
 		});
 }
-// 	// Find All Orders
-// 	Order.find({}, function(err, orders) {
 
-// 		// For Each Order,
-// 		for (var i = 0; i < orders.length; i++) {
-// 		 	order = orders[i];
-
-// 			// find the referenced ingredients
-// 			var ingredients = [];
-// 			for (var j = 0; j < order.ingredients.length; i++) {
-// 				id = order.ingredients[j];
-
-
-// 				Ingredient.find({'_id': id}, function(err, ingredient) {
-// 					if (err) errorHandler(err,req,res);
-// 					else {
-// 						ingredients.push(ingredient);
-// 					}
-// 				});
-// 			}
-
-// 			order.ingredients = ingredients;
-// 			console.log(orders)
-// 			res.render('kitchen', {'orders': orders});
-// 		};
-// }
 /** To complete an order, you remove it from the collection of pending orders
  */
 index.completeOrder = function(req, res) {
-	console.log('WIP')
+	
+	console.log(req.body.idToComplete);
+	Order
+		.find({'_id':req.body.idToComplete})
+		.remove(function(err) {
+			if (err) errorHandler(err,req,res);
+		});
 };
 
 module.exports = index;
