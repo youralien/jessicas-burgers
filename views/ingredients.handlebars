@@ -1,8 +1,12 @@
-<ul>
+<h4>Click on an ingredient to edit</h4>
 {{#each ingredients}}
-	<li>
-		<span> {{this.name}} </span>
-		<span> {{this.price}} </span>
-	</li>
+<div class='ingredient' id={{this._id}}>	
+  Name
+  <input class='name-input' type='text' name='name' value={{this.name}}>
+  Price
+  <input class='price-input' type='number' min=0 name='price' value={{this.price}}>
+  <input class='inStock-input' type='checkbox' checked>In Stock</input>
+  <button class='btn-save' hidden>Save</button>
+</div>
 {{/each}}
-</ul>
+<button class='btn-add'>Add New Ingredient</button>

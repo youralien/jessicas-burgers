@@ -23,7 +23,7 @@ index.stockIngredients = function(req, res) {
 			http://stackoverflow.com/questions/16726330/mongoose-mongodb-batch-insert
 			 */
 			Ingredient.collection.insert(ingredientData, function(err, docs) {
-				if (err) errorHandler();
+				if (err) errorHandler(err,req,res);
 				else {
 					res.send(docs.length + 
 						' ingredients have been stocked into the collection');
@@ -40,10 +40,10 @@ index.stockIngredients = function(req, res) {
 
 }
 
-index.listIngredients = function(req, res) {
+index.getIngredients = function(req, res) {
 	
 	// only list ingredients still in stock
-	Ingredient.find({}, function(err, ingredients) {
+	Ingredient.find({inStock: true}, function(err, ingredients) {
 		if (req.xhr) {
 			res.send(ingredients);
 		}
@@ -53,9 +53,53 @@ index.listIngredients = function(req, res) {
 	});
 };
 
-index.toggleIngredients = function(req, res) {
+index.postIngredients = function(req, res) {
+	/** Two Cases:
+	 1) Add new ingredient, is not a duplicate in the db
+	 2) Update an ingredient, with new names or price, same _id
+	 
+	http://stackoverflow.com/questions/7267102/how-do-i-update-upsert-a-document-in-mongoose
 
-	res.send('WIP: toggleIngredients');
+	 */
+	
+	// var ingredient = new Ingredient({
+	// 	name: req.body.name,
+	// 	price: req.body.price,
+	// });
+
+	// var upsertData = ingredient.toObject();
+
+	// delete upsertData._id;
+
+	// Ingredient.update({
+	// 	_id: req.body.id,
+	// });
+
+	var ingredientObj = req.body;
+
+	// Already has an _id, so is already in the database
+	if (ingredientObj._id) {
+		Ingredient.update(
+			{_id: ingredientObj._id},
+			ingredientObj,
+			function(err, numAffected) {
+				if (err) errorHandler(err,req,res);
+				if (numAffected != 1) errorHandler(err,req,res);
+			}
+		);
+	}
+
+	else {
+		ingredient = new Ingredient({
+			name: ingredientObj.name,
+			price: ingredientObj.price,
+			inStock: true
+		});
+		ingredient.save(function(err) {
+			if (err) errorHandler(err,req,res);
+		});
+	}
+
 };
 
 /** To make an order, you must go to a form and add the ingredients you want

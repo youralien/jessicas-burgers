@@ -32,8 +32,8 @@ mongoose.connect(mongoURI)
 var PORT = process.env.PORT || 3000; 
 
 app.get('/stockIngredients', index.stockIngredients);
-app.get('/ingredients', index.listIngredients);
-app.post('/ingredients', index.toggleIngredients);
+app.get('/ingredients', index.getIngredients);
+app.post('/ingredients', index.postIngredients);
 app.get('/order', index.makeOrder);
 app.post('/order', index.submitOrder);
 app.get('/kitchen', index.listOrders);
