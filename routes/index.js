@@ -42,8 +42,7 @@ index.stockIngredients = function(req, res) {
 
 index.getIngredients = function(req, res) {
 	
-	// only list ingredients still in stock
-	Ingredient.find({inStock: true}, function(err, ingredients) {
+	Ingredient.find({}, function(err, ingredients) {
 		if (req.xhr) {
 			res.send(ingredients);
 		}
@@ -54,26 +53,6 @@ index.getIngredients = function(req, res) {
 };
 
 index.postIngredients = function(req, res) {
-	/** Two Cases:
-	 1) Add new ingredient, is not a duplicate in the db
-	 2) Update an ingredient, with new names or price, same _id
-	 
-	http://stackoverflow.com/questions/7267102/how-do-i-update-upsert-a-document-in-mongoose
-
-	 */
-	
-	// var ingredient = new Ingredient({
-	// 	name: req.body.name,
-	// 	price: req.body.price,
-	// });
-
-	// var upsertData = ingredient.toObject();
-
-	// delete upsertData._id;
-
-	// Ingredient.update({
-	// 	_id: req.body.id,
-	// });
 
 	var ingredientObj = req.body;
 
@@ -89,6 +68,7 @@ index.postIngredients = function(req, res) {
 		);
 	}
 
+	// Add a new ingredient
 	else {
 		ingredient = new Ingredient({
 			name: ingredientObj.name,
