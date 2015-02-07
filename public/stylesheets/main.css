@@ -1,12 +1,43 @@
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
 body {
 	background-color: white;
+	font-family: Impact, Charcoal, sans-serif;
+}
+
+#main-content {
+	max-width: 600px;
+	margin: 0 auto 0 auto;
+}
+
+h3 {
+	text-align: center;
+}
+
+h4 {
+	text-align: center;
+}
+/*ingredients styles*/
+
+.ingredient {
+	text-align: center;
+	max-width: 500px;
+	margin: auto;
+}
+
+.btn-add {
+	display: block;
+	margin: auto;
 }
 
 input {
     background-color: transparent;
     border: 0px solid;
     height: 22px;
-    text-align: center;
 }
 
 input.price-input {
@@ -15,14 +46,7 @@ input.price-input {
 }
 
 
-/*from order.css*/
-
-#order-form {
-   margin: 0 auto 0 auto;
-   background-position: center;
-   max-width: 500px;
-}
-
+/*order menu styles*/
 li{
    list-style:none;    
    overflow:hidden;
