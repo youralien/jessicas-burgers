@@ -10,6 +10,15 @@ function errorHandler(err, req, res, next) {
 
 var index = {}
 
+index.home = function(req, res) {
+	var links = [
+		{text: 'Ingredients', href: '/ingredients'},
+		{text: 'Order', href: '/order'},
+		{text: 'Kitchen', href: '/kitchen'} 
+	];
+	res.render('home', {'links': links})
+}
+
 index.stockIngredients = function(req, res) {
 	
 	Ingredient.count({}, function(err, count) {

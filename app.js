@@ -31,6 +31,7 @@ mongoose.connect(mongoURI)
 // Set the port
 var PORT = process.env.PORT || 3000; 
 
+app.get('/', index.home);
 app.get('/stockIngredients', index.stockIngredients);
 app.get('/ingredients', index.getIngredients);
 app.post('/ingredients', index.postIngredients);
