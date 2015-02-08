@@ -25,7 +25,7 @@ function exitEditMode(currentTarget) {
 	// Change the div to exit editing mode
   currentTarget.removeClass('editing');
 
-	// Hide the Save and Out-of Stock Buttons 
+	// Hide the Save and Out-of Stock Buttons
   currentTarget.children('button').prop('hidden', true);
 
 }
@@ -35,11 +35,11 @@ $('.ingredient').not('.editing').click(function (event) {
   enterEditMode(this);
 });
 
+// FIXME: does not trigger event when adding a new ingredient and saving that ingredient. 
 $('.btn-save').click(function (event) {
 
 	debugger;
-	console.log(typeof this);
-	var ingredient = {}
+	var ingredient = {};
 
 	// the ingredient
 	ingredient._id = $(this).parent().attr('id')
@@ -50,14 +50,21 @@ $('.btn-save').click(function (event) {
 	exitEditMode($(this).parent());
 
 
-	$.post('/ingredients', ingredient);
-	
+	$.post('/ingredients', ingredient, function(){
+		alert('success')
+	})
+		.done(function(){
+			alert('second success');
+		})
+		.fail(function(){
+			alert('fail');
+		})
 	
 });
 
 $('.btn-add').click(function(event) {
 	var new_ingredient = $('.ingredient:last').clone();
-	new_ingredient.attr('id', undefined);
+	new_ingredient.removeAttr('id');
 
 	$(this).before(new_ingredient);
 	
