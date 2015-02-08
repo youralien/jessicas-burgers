@@ -3,19 +3,20 @@ var mongoose = require('mongoose');
 var Ingredient = require(path.join(__dirname, '../models/ingredient'));
 var Order = require(path.join(__dirname, '../models/order'));
 
+var index = {}
+
 function errorHandler(err, req, res, next) {
   res.status(500);
   res.render('error', { error: err });
 }
 
-var index = {}
-
-index.home = function(req, res) {
-	var links = [
+var links = [
 		{text: 'Ingredients', href: '/ingredients'},
 		{text: 'Order', href: '/order'},
 		{text: 'Kitchen', href: '/kitchen'} 
 	];
+
+index.home = function(req, res) {
 	res.render('home', {'links': links})
 }
 
@@ -56,7 +57,12 @@ index.getIngredients = function(req, res) {
 			res.send(ingredients);
 		}
 		else {
-			res.render('ingredients',{'ingredients': ingredients})
+			res.render(
+				'ingredients',
+				{
+					'links': links,
+					'ingredients': ingredients
+				});
 		}
 	});
 };
@@ -100,7 +106,12 @@ index.makeOrder = function(req, res) {
 	Ingredient.find({}, function(err, ingredients) {
 		if (err) errorHandler(err, req, res);
 		else {
-			res.render('order', {'ingredients':ingredients});
+			res.render(
+				'order',
+				{
+					'links':links,
+					'ingredients':ingredients
+				});
 		}
 	});
 };
@@ -131,7 +142,12 @@ index.listOrders = function(req, res) {
 		.exec(function(err, orders) {
 			if (err) errorHandler(err,req,res);
 			else {
-				res.render('kitchen', {'orders':orders});
+				res.render(
+					'kitchen',
+					{
+						'links':links,
+						'orders':orders
+					});
 			}
 		});
 }
