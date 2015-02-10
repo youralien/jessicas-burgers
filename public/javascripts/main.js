@@ -51,11 +51,8 @@ $('.btn-save').click(function (event) {
 
 
 	$.post('/ingredients', ingredient, function(){
-		alert('success')
+		alert('Successfully Updated the Ingredients')
 	})
-		.done(function(){
-			alert('second success');
-		})
 		.fail(function(){
 			alert('fail');
 		})
@@ -92,7 +89,7 @@ $('.order-checkbox').change(function() {
 	$('#total-cost').val(total)
 });
 
-$orderForm = $('#order-form');
+$orderForm = $('.order-form');
 $('#btn-order').click(function() {
 	
 	var checked_inputs = $orderForm.find(':checked');
