@@ -35,10 +35,9 @@ $('.ingredient').not('.editing').click(function (event) {
   enterEditMode(this);
 });
 
-// FIXME: does not trigger event when adding a new ingredient and saving that ingredient. 
-$('.btn-save').click(function (event) {
+$('.btn-save').click( saveButtonHandler );
 
-	debugger;
+function saveButtonHandler() {
 	var ingredient = {};
 
 	// the ingredient
@@ -55,19 +54,26 @@ $('.btn-save').click(function (event) {
 	})
 		.fail(function(){
 			alert('fail');
-		})
-	
-});
+		});
+}
 
-$('.btn-add').click(function(event) {
+$('.btn-add').click( addButtonHandler );
+
+function addButtonHandler() {
+	
+	// Create New Ingredient
 	var new_ingredient = $('.ingredient:last').clone();
+	
+	// New ingredient should not have an id yet, until mongo assigns it
 	new_ingredient.removeAttr('id');
 
-	$(this).before(new_ingredient);
-	
-	enterEditMode(new_ingredient);
-});
+	// Bind saveButtonHandler to a click event for this new save button
+	new_ingredient.children('.btn-save').click( saveButtonHandler );
 
+	$(this).before(new_ingredient);
+
+	enterEditMode(new_ingredient);
+}
 /**
 ======== order ========
  */
