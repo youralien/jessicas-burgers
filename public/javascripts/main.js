@@ -25,7 +25,7 @@ function exitEditMode(currentTarget) {
 	// Change the div to exit editing mode
   currentTarget.removeClass('editing');
 
-	// Hide the Save and Out-of Stock Buttons 
+	// Hide the Save and Out-of Stock Buttons
   currentTarget.children('button').prop('hidden', true);
 
 }
@@ -35,11 +35,10 @@ $('.ingredient').not('.editing').click(function (event) {
   enterEditMode(this);
 });
 
-$('.btn-save').click(function (event) {
+$('.btn-save').click( saveButtonHandler );
 
-	debugger;
-	console.log(typeof this);
-	var ingredient = {}
+function saveButtonHandler() {
+	var ingredient = {};
 
 	// the ingredient
 	ingredient._id = $(this).parent().attr('id')
@@ -50,20 +49,31 @@ $('.btn-save').click(function (event) {
 	exitEditMode($(this).parent());
 
 
-	$.post('/ingredients', ingredient);
-	
-	
-});
+	$.post('/ingredients', ingredient, function(){
+		alert('Successfully Updated the Ingredients')
+	})
+		.fail(function(){
+			alert('fail');
+		});
+}
 
-$('.btn-add').click(function(event) {
+$('.btn-add').click( addButtonHandler );
+
+function addButtonHandler() {
+	
+	// Create New Ingredient
 	var new_ingredient = $('.ingredient:last').clone();
-	new_ingredient.attr('id', undefined);
+	
+	// New ingredient should not have an id yet, until mongo assigns it
+	new_ingredient.removeAttr('id');
+
+	// Bind saveButtonHandler to a click event for this new save button
+	new_ingredient.children('.btn-save').click( saveButtonHandler );
 
 	$(this).before(new_ingredient);
-	
-	enterEditMode(new_ingredient);
-});
 
+	enterEditMode(new_ingredient);
+}
 /**
 ======== order ========
  */
@@ -85,7 +95,7 @@ $('.order-checkbox').change(function() {
 	$('#total-cost').val(total)
 });
 
-$orderForm = $('#order-form');
+$orderForm = $('.order-form');
 $('#btn-order').click(function() {
 	
 	var checked_inputs = $orderForm.find(':checked');

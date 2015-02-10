@@ -9,6 +9,12 @@ body {
 	font-family: Impact, Charcoal, sans-serif;
 }
 
+#header {
+  max-width: 600px;
+  margin: auto;
+  text-align: center;
+  color: gray;
+}
 #main-content {
 	max-width: 600px;
 	margin: 0 auto 0 auto;
